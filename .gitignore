@@ -1,8 +1,11 @@
-
 jupyter_example/env/
 jupyter_example/.pynb_checkpoints
 jupyter_example/Gemfile.lock
 jupyter_example/.ruby-version
+jupyter_example/run/baseline_scenario/**/reopt/
+jupyter_example/run/baseline_scenario/baseline_scenario*
+jupyter_example/run/baseline_scenario/reopt/
+
 env/
 .ipynb_checkpoints
 .DS_Store
