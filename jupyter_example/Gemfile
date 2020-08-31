@@ -38,7 +38,9 @@ allow_local = ENV['FAVOR_LOCAL_GEMS']
 #   gem 'openstudio-model-articulation', '0.1.0'
 # end
 # gem 'urbanopt-scenario', path: '../urbanopt-scenario-gem'
-gem 'urbanopt-scenario', github: 'URBANopt/urbanopt-scenario-gem', branch: 'multiplepv'
+# gem 'urbanopt-scenario', github: 'URBANopt/urbanopt-scenario-gem', branch: 'develop'
+# Install tagged version because they recently changed this library (2020-08-30)...
+gem 'urbanopt-scenario', '0.3.0'
 
 # if allow_local && File.exist?('../urbanopt-scenario-gem')
 #   gem 'urbanopt-scenario', path: '../urbanopt-scenario-gem'
@@ -49,7 +51,7 @@ gem 'urbanopt-scenario', github: 'URBANopt/urbanopt-scenario-gem', branch: 'mult
 # end
 
 
-gem 'urbanopt-reopt', git: 'https://github.com/urbanopt/urbanopt-reopt-gem.git', branch: 'multiplepv'
+gem 'urbanopt-reopt', git: 'https://github.com/urbanopt/urbanopt-reopt-gem.git', branch: 'develop'
 
 # if allow_local && File.exist?('../urbanopt-reopt-gem')
 #   gem 'urbanopt-reopt', path: '../urbanopt-reopt-gem'
@@ -69,14 +71,16 @@ gem 'urbanopt-geojson', github: 'URBANopt/urbanopt-geojson-gem', branch: 'develo
 #   gem 'urbanopt-geojson', '0.1.0'
 # end
 
-gem 'openstudio-standards', '0.2.10' # doesn't work in 0.2.8?
+gem 'openstudio-standards', '0.2.11' # doesn't work in 0.2.8?
 
 # simplecov has an unneccesary dependency on native json gem, use fork that does not require this
-gem 'simplecov', github: 'NREL/simplecov'
+# gem 'simplecov', github: 'NREL/simplecov'
+# Use the regular one because the NREL fork isn't updated with a tag that's compatible with urbanopt-geojson...
+gem 'simplecov'
 
 gem 'certified'
 
-gem 'daru', '0.2.2'
+gem 'daru', '>=0.2.2'
 gem 'daru-view', git: 'https://github.com/SciRuby/daru-view'
 gem 'ffi-rzmq'
 gem 'iruby'
