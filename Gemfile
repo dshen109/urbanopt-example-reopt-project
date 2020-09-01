@@ -48,7 +48,7 @@ if allow_local && File.exist?('../urbanopt-scenario-gem')
 elsif github_branch
   gem 'urbanopt-scenario', github: 'URBANopt/urbanopt-scenario-gem', branch: 'develop'
 else
-  gem 'urbanopt-scenario', '0.2.0'
+  gem 'urbanopt-scenario', '0.3.0'
 end
 
 
@@ -58,8 +58,7 @@ if allow_local && File.exist?('../urbanopt-reopt-gem')
 elsif github_branch
   gem 'urbanopt-reopt', github: 'URBANopt/urbanopt-reopt-gem', branch: 'develop'
 else
-  gem 'urbanopt-reopt', github: 'URBANopt/urbanopt-reopt-gem', branch: 'develop'
-  #gem 'urbanopt-reopt', '0.2.0'
+  gem 'urbanopt-reopt', '0.3.0'
 end
 
 
@@ -68,13 +67,15 @@ if allow_local && File.exists?('../urbanopt-geojson-gem')
 elsif allow_local
   gem 'urbanopt-geojson', github: 'URBANopt/urbanopt-geojson-gem', branch: 'develop'
 else
-  gem 'urbanopt-geojson', '0.2.0'
+  gem 'urbanopt-geojson', '0.3.1'
 end
 
-gem 'openstudio-standards', '0.2.10' # doesn't work in 0.2.8?
+gem 'openstudio-standards', '0.2.11' # doesn't work in 0.2.8?
 
 # simplecov has an unneccesary dependency on native json gem, use fork that does not require this
-gem 'simplecov', github: 'NREL/simplecov'
+# gem 'simplecov', github: 'NREL/simplecov'
+# User regular simplecov since the NREL fork has dependency issues.
+gem 'simplecov'
 
 # Support requests on windows machines
 gem 'certified'
