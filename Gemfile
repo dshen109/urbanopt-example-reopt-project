@@ -10,39 +10,6 @@ source 'http://rubygems.org'
 allow_local = false
 github_branch = false
 
-# Uncomment the extension, common measures, core gems if you need to test local development versions. Otherwise
-# these are included in the model articulation and urbanopt gems
-#
-# if allow_local && File.exist?('../OpenStudio-extension-gem')
-#   gem 'openstudio-extension', path: '../OpenStudio-extension-gem'
-# elsif allow_local
-#   gem 'openstudio-extension', github: 'NREL/OpenStudio-extension-gem', branch: 'develop'
-# end
-#
-# if allow_local && File.exist?('../openstudio-common-measures-gem')
-#   gem 'openstudio-common-measures', path: '../openstudio-common-measures-gem'
-# elsif allow_local
-#   gem 'openstudio-common-measures', github: 'NREL/openstudio-common-measures-gem', branch: 'develop'
-# end
-#
-# if allow_local && File.exist?('../urbanopt-core-gem')
-#   gem 'urbanopt-core', path: '../urbanopt-core-gem'
-# elsif allow_local
-#   gem 'urbanopt-core', github: 'URBANopt/urbanopt-core-gem', branch: 'develop'
-# end
-#
-# if allow_local && File.exist?('../openstudio-model-articulation-gem')
-#   # gem 'openstudio-model-articulation', github: 'NREL/openstudio-model-articulation-gem', branch: 'develop'
-#   gem 'openstudio-model-articulation', path: '../openstudio-model-articulation-gem'
-# elsif allow_local
-#   gem 'openstudio-model-articulation', github: 'NREL/openstudio-model-articulation-gem', branch: 'develop'
-# else
-#   gem 'openstudio-model-articulation', '0.1.0'
-# end
-# gem 'urbanopt-scenario', path: '../urbanopt-scenario-gem'
-
-
-
 if allow_local && File.exist?('../urbanopt-scenario-gem')
   gem 'urbanopt-scenario', path: '../urbanopt-scenario-gem'
 elsif github_branch
@@ -51,8 +18,6 @@ else
   gem 'urbanopt-scenario', '0.3.0'
 end
 
-
-
 if allow_local && File.exist?('../urbanopt-reopt-gem')
   gem 'urbanopt-reopt', path: '../urbanopt-reopt-gem'
 elsif github_branch
@@ -60,7 +25,6 @@ elsif github_branch
 else
   gem 'urbanopt-reopt', '0.3.0'
 end
-
 
 if allow_local && File.exists?('../urbanopt-geojson-gem')
   gem 'urbanopt-geojson', path: '../urbanopt-geojson-gem'
