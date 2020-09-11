@@ -78,16 +78,26 @@ end
 
 def baseline_scenario
   name = 'Baseline Scenario'
+  # Where the outputs go
   run_dir = File.join(File.dirname(__FILE__), 'run/baseline_scenario/')
+  # ????
   feature_file_path = File.join(File.dirname(__FILE__), 'example_project.json')
+  # Contains mapper classes to apply measures to each building
   csv_file = File.join(File.dirname(__FILE__), 'baseline_scenario.csv')
+  # Directory of monkeypatches to apply measures.
   mapper_files_dir = File.join(File.dirname(__FILE__), 'mappers/')
+  # Where to look for REopt data assumptions
   reopt_files_dir = File.join(File.dirname(__FILE__), 'reopt/')
+  # The actual REopt assumption file to use
   scenario_reopt_assumptions_file_name = 'base_assumptions.json'
+  # ???
   num_header_rows = 1
 
   feature_file = URBANopt::GeoJSON::GeoFile.from_file(feature_file_path)
-  scenario = URBANopt::Scenario::REoptScenarioCSV.new(name, root_dir, run_dir, feature_file, mapper_files_dir, csv_file, num_header_rows, reopt_files_dir, scenario_reopt_assumptions_file_name)
+  scenario = URBANopt::Scenario::REoptScenarioCSV.new(
+    name, root_dir, run_dir, feature_file, mapper_files_dir, csv_file,
+    num_header_rows, reopt_files_dir, scenario_reopt_assumptions_file_name
+  )
   scenario
 end
 
@@ -102,7 +112,9 @@ def high_efficiency_scenario
   num_header_rows = 1
 
   feature_file = URBANopt::GeoJSON::GeoFile.from_file(feature_file_path)
-  scenario = URBANopt::Scenario::REoptScenarioCSV.new(name, root_dir, run_dir, feature_file, mapper_files_dir, csv_file, num_header_rows, reopt_files_dir, scenario_reopt_assumptions_file_name)
+  scenario = URBANopt::Scenario::REoptScenarioCSV.new(
+    name, root_dir, run_dir, feature_file, mapper_files_dir, csv_file,
+    num_header_rows, reopt_files_dir, scenario_reopt_assumptions_file_name)
   scenario
 end
 
@@ -148,7 +160,7 @@ task :post_process_baseline do
   scenario_report = default_post_processor.run
   scenario_report.save
 
-  ### save feature reports 
+  ### save feature reports
   scenario_report.feature_reports.each do |feature_report|
     feature_report.save_feature_report()
   end
@@ -186,7 +198,7 @@ task :post_process_high_efficiency do
   default_post_processor = URBANopt::Scenario::ScenarioDefaultPostProcessor.new(high_efficiency_scenario)
   scenario_report = default_post_processor.run
   scenario_report.save
-  ### save feature reports 
+  ### save feature reports
   scenario_report.feature_reports.each do |feature_report|
     feature_report.save_feature_report()
   end
@@ -225,7 +237,7 @@ task :post_process_mixed do
   scenario_report = default_post_processor.run
   scenario_report.save
 
-  ### save feature reports 
+  ### save feature reports
   scenario_report.feature_reports.each do |feature_report|
     feature_report.save_feature_report()
   end
