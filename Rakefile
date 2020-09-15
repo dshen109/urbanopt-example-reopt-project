@@ -1,32 +1,32 @@
-# *********************************************************************************
-# URBANopt, Copyright (c) 2019-2020, Alliance for Sustainable Energy, LLC, and other
-# contributors. All rights reserved.
+# ******************************************************************************
+# URBANopt, Copyright (c) 2019-2020, Alliance for Sustainable Energy, LLC, and
+# other contributors. All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without modification,
-# are permitted provided that the following conditions are met:
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
 #
-# Redistributions of source code must retain the above copyright notice, this list
-# of conditions and the following disclaimer.
+# Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
 #
 # Redistributions in binary form must reproduce the above copyright notice, this
-# list of conditions and the following disclaimer in the documentation and/or other
-# materials provided with the distribution.
+# list of conditions and the following disclaimer in the documentation and/or
+# other materials provided with the distribution.
 #
-# Neither the name of the copyright holder nor the names of its contributors may be
-# used to endorse or promote products derived from this software without specific
-# prior written permission.
+# Neither the name of the copyright holder nor the names of its contributors may
+# be used to endorse or promote products derived from this software without
+# specific prior written permission.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-# IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-# INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
-# OF THE POSSIBILITY OF SUCH DAMAGE.
-# *********************************************************************************
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# ******************************************************************************
 
 require 'openstudio/extension'
 require 'openstudio/extension/rake_task'
@@ -80,7 +80,7 @@ def baseline_scenario
   name = 'Baseline Scenario'
   # Where the outputs go
   run_dir = File.join(File.dirname(__FILE__), 'run/baseline_scenario/')
-  # ????
+  # GEOJSON features
   feature_file_path = File.join(File.dirname(__FILE__), 'example_project.json')
   # Contains mapper classes to apply measures to each building
   csv_file = File.join(File.dirname(__FILE__), 'baseline_scenario.csv')
@@ -90,7 +90,7 @@ def baseline_scenario
   reopt_files_dir = File.join(File.dirname(__FILE__), 'reopt/')
   # The actual REopt assumption file to use
   scenario_reopt_assumptions_file_name = 'base_assumptions.json'
-  # ???
+  # number of header rows to skip
   num_header_rows = 1
 
   feature_file = URBANopt::GeoJSON::GeoFile.from_file(feature_file_path)
@@ -129,7 +129,10 @@ def mixed_scenario
   num_header_rows = 1
 
   feature_file = URBANopt::GeoJSON::GeoFile.from_file(feature_file_path)
-  scenario = URBANopt::Scenario::REoptScenarioCSV.new(name, root_dir, run_dir, feature_file, mapper_files_dir, csv_file, num_header_rows, reopt_files_dir, scenario_reopt_assumptions_file_name)
+  scenario = URBANopt::Scenario::REoptScenarioCSV.new(
+    name, root_dir, run_dir, feature_file, mapper_files_dir, csv_file,
+    num_header_rows, reopt_files_dir, scenario_reopt_assumptions_file_name
+  )
   scenario
 end
 
@@ -156,7 +159,9 @@ end
 desc 'Post Process Baseline Scenario'
 task :post_process_baseline do
   puts 'Post Processing Baseline Scenario...'
-  default_post_processor = URBANopt::Scenario::ScenarioDefaultPostProcessor.new(baseline_scenario)
+  default_post_processor = URBANopt::Scenario::ScenarioDefaultPostProcessor.new(
+    baseline_scenario
+  )
   scenario_report = default_post_processor.run
   scenario_report.save
 
@@ -166,13 +171,27 @@ task :post_process_baseline do
   end
 
   scenario_base = default_post_processor.scenario_base
-  reopt_post_processor = URBANopt::REopt::REoptPostProcessor.new(scenario_report, scenario_base.scenario_reopt_assumptions_file, scenario_base.reopt_feature_assumptions, DEVELOPER_NREL_KEY)
+  reopt_post_processor = URBANopt::REopt::REoptPostProcessor.new(
+    scenario_report, scenario_base.scenario_reopt_assumptions_file,
+    scenario_base.reopt_feature_assumptions, DEVELOPER_NREL_KEY
+  )
 
   # Run Aggregate Scenario
-  scenario_report_scenario = reopt_post_processor.run_scenario_report(scenario_report: scenario_report, save_name: 'scenario_report_reopt_global_optimization')
+  scenario_report_scenario = reopt_post_processor.run_scenario_report(
+    scenario_report: scenario_report,
+    save_name: 'scenario_report_reopt_global_optimization'
+  )
 
-  # Run features individually - this is an alternative approach to the previous step, in your analysis depending on project ojectives you maye only need to run one
-  scenario_report_features = reopt_post_processor.run_scenario_report_features(scenario_report: scenario_report, save_names_feature_reports: ['feature_report_reopt']* scenario_report.feature_reports.length, save_name_scenario_report: 'scenario_report_reopt_local_optimization')
+  # Run features individually - this is an alternative approach to the previous
+  # step, in your analysis depending on project ojectives you maye only need to
+  # run one
+  scenario_report_features = reopt_post_processor.run_scenario_report_features(
+    scenario_report: scenario_report,
+    save_names_feature_reports: (
+      ['feature_report_reopt'] * scenario_report.feature_reports.length
+    ),
+    save_name_scenario_report: 'scenario_report_reopt_local_optimization'
+  )
 end
 
 ### High Efficiency
@@ -195,7 +214,9 @@ desc 'Post Process High Efficiency Scenario'
 task :post_process_high_efficiency do
   puts 'Post Processing High Efficiency Scenario...'
 
-  default_post_processor = URBANopt::Scenario::ScenarioDefaultPostProcessor.new(high_efficiency_scenario)
+  default_post_processor = URBANopt::Scenario::ScenarioDefaultPostProcessor.new(
+    high_efficiency_scenario
+  )
   scenario_report = default_post_processor.run
   scenario_report.save
   ### save feature reports
@@ -204,13 +225,27 @@ task :post_process_high_efficiency do
   end
 
   scenario_base = default_post_processor.scenario_base
-  reopt_post_processor = URBANopt::REopt::REoptPostProcessor.new(scenario_report, scenario_base.scenario_reopt_assumptions_file, scenario_base.reopt_feature_assumptions, DEVELOPER_NREL_KEY)
+  reopt_post_processor = URBANopt::REopt::REoptPostProcessor.new(
+    scenario_report, scenario_base.scenario_reopt_assumptions_file,
+    scenario_base.reopt_feature_assumptions, DEVELOPER_NREL_KEY
+  )
 
   # Run Aggregate Scenario
-  scenario_report_scenario = reopt_post_processor.run_scenario_report(scenario_report: scenario_report, save_name: 'scenario_report_reopt_global_optimization')
+  scenario_report_scenario = reopt_post_processor.run_scenario_report(
+    scenario_report: scenario_report,
+    save_name: 'scenario_report_reopt_global_optimization'
+  )
 
-  # Run features individually - this is an alternative approach to the previous step, in your analysis depending on project ojectives you maye only need to run one
-  scenario_report_features = reopt_post_processor.run_scenario_report_features(scenario_report: scenario_report, save_names_feature_reports: ['feature_report_reopt']* scenario_report.feature_reports.length, save_name_scenario_report: 'scenario_report_reopt_local_optimization')
+  # Run features individually - this is an alternative approach to the previous
+  # step, in your analysis depending on project ojectives you maye only need to
+  # run one
+  scenario_report_features = reopt_post_processor.run_scenario_report_features(
+    scenario_report: scenario_report,
+    save_names_feature_reports: (
+      ['feature_report_reopt'] * scenario_report.feature_reports.length
+    ),
+    save_name_scenario_report: 'scenario_report_reopt_local_optimization'
+  )
 end
 
 ### Mixed
@@ -233,7 +268,9 @@ desc 'Post Process Mixed Scenario'
 task :post_process_mixed do
   puts 'Post Processing Mixed Scenario...'
 
-  default_post_processor = URBANopt::Scenario::ScenarioDefaultPostProcessor.new(mixed_scenario)
+  default_post_processor = URBANopt::Scenario::ScenarioDefaultPostProcessor.new(
+    mixed_scenario
+  )
   scenario_report = default_post_processor.run
   scenario_report.save
 
@@ -243,13 +280,23 @@ task :post_process_mixed do
   end
 
   scenario_base = default_post_processor.scenario_base
-  reopt_post_processor = URBANopt::REopt::REoptPostProcessor.new(scenario_report, scenario_base.scenario_reopt_assumptions_file, scenario_base.reopt_feature_assumptions, DEVELOPER_NREL_KEY)
+  reopt_post_processor = URBANopt::REopt::REoptPostProcessor.new(
+    scenario_report, scenario_base.scenario_reopt_assumptions_file,
+    scenario_base.reopt_feature_assumptions, DEVELOPER_NREL_KEY
+  )
 
   # Run Aggregate Scenario
-  scenario_report_scenario = reopt_post_processor.run_scenario_report(scenario_report: scenario_report, save_name: 'scenario_report_reopt_global_optimization')
+  scenario_report_scenario = reopt_post_processor.run_scenario_report(
+    scenario_report: scenario_report,
+    save_name: 'scenario_report_reopt_global_optimization'
+  )
 
   # Run features individually - this is an alternative approach to the previous step, in your analysis depending on project ojectives you maye only need to run one
-  scenario_report_features = reopt_post_processor.run_scenario_report_features(scenario_report: scenario_report, save_names_feature_reports: ['feature_report_reopt']* scenario_report.feature_reports.length, save_name_scenario_report: 'scenario_report_reopt_local_optimization')
+  scenario_report_features = reopt_post_processor.run_scenario_report_features(
+    scenario_report: scenario_report,
+    save_names_feature_reports: ['feature_report_reopt'] * scenario_report.feature_reports.length,
+    save_name_scenario_report: 'scenario_report_reopt_local_optimization'
+  )
 end
 
 ### All
