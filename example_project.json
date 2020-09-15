@@ -21,7 +21,8 @@
                 "tariff_filename": null,
                 "timesteps_per_hour": 1,
                 "type": "Site Origin",
-                "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
+                "weather_filename":
+                  "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
             },
             "type": "Feature"
         },
